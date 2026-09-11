@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Everywhere Is Carried</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2ead9;
+    --bg-raised:#ffffff;
+    --bg-sunken:#e8ddc4;
+    --ink:#221b13;
+    --ink-dim:#6e6252;
+    --rule:#d9cbab;
+    --vermilion:#b23a1f;
+    --red:#7c1c1c;
+    --amber:#a06a1b;
+    --dusk:#3d5266;
+    --act1:#3f5a42;
+    --act2:#4c5a80;
+    --act3:#a3311f;
+    --act4:#a9701c;
+    --chip-bg: rgba(0,0,0,.05);
+    --shadow: 0 1px 2px rgba(30,20,10,.06), 0 8px 24px rgba(30,20,10,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b0a08;
+      --bg-raised:#161310;
+      --bg-sunken:#000000;
+      --ink:#f1e9da;
+      --ink-dim:#a89a86;
+      --rule:#2b2620;
+      --vermilion:#d8532a;
+      --red:#c2453a;
+      --amber:#e3ac52;
+      --dusk:#8ea3bd;
+      --act1:#7fa87f;
+      --act2:#9aa8d6;
+      --act3:#d8543f;
+      --act4:#e3ac52;
+      --chip-bg: rgba(255,255,255,.07);
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b0a08;
+    --bg-raised:#161310;
+    --bg-sunken:#000000;
+    --ink:#f1e9da;
+    --ink-dim:#a89a86;
+    --rule:#2b2620;
+    --vermilion:#d8532a;
+    --red:#c2453a;
+    --amber:#e3ac52;
+    --dusk:#8ea3bd;
+    --act1:#7fa87f;
+    --act2:#9aa8d6;
+    --act3:#d8543f;
+    --act4:#e3ac52;
+    --chip-bg: rgba(255,255,255,.07);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Space Grotesk",-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Syne",sans-serif;
+    text-wrap:balance;
+    font-weight:600;
+    margin:0;
+  }
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;}
+  a{color:inherit;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .prose{max-width:680px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--bg-sunken);
+    border-bottom:1px solid var(--rule);
+    padding:88px 28px 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{max-width:1180px;margin:0 auto;position:relative;}
+  .seam{
+    width:2px;
+    height:0;
+    margin:0 auto 36px;
+    background:linear-gradient(to bottom, transparent, var(--amber) 20%, #fff8ea 50%, var(--amber) 80%, transparent);
+    box-shadow:0 0 24px 2px var(--amber);
+    animation:seam-open 1.3s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes seam-open{
+    0%{height:0; opacity:0;}
+    40%{opacity:1;}
+    100%{height:120px; opacity:1;}
+  }
+  .eyebrow{
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    text-align:center;
+    margin-bottom:18px;
+    opacity:0;
+    animation:fade-up .8s ease .9s forwards;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem,6vw,4.6rem);
+    text-align:center;
+    letter-spacing:-.01em;
+    opacity:0;
+    animation:fade-up .9s ease 1.05s forwards;
+  }
+  .hero h1 em{font-style:italic; color:var(--vermilion);}
+  .hero-sub{
+    text-align:center;
+    max-width:620px;
+    margin:22px auto 0;
+    font-size:1.08rem;
+    color:var(--ink-dim);
+    opacity:0;
+    animation:fade-up .9s ease 1.2s forwards;
+  }
+  .hero-meta{
+    text-align:center;
+    margin-top:26px;
+    font-size:.78rem;
+    color:var(--ink-dim);
+    opacity:0;
+    animation:fade-up .9s ease 1.35s forwards;
+  }
+  .hero-meta .mono{color:var(--ink-dim);}
+  @keyframes fade-up{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){
+    .seam,.eyebrow,.hero h1,.hero-sub,.hero-meta{animation:none !important; opacity:1 !important; height:120px !important; transform:none !important;}
+  }
+
+  /* ---------- ACT LEGEND ---------- */
+  .legend{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    margin:-1px 0 0;
+  }
+  .legend a{
+    display:block;
+    background:var(--bg-raised);
+    padding:18px 16px 16px;
+    text-decoration:none;
+    border-top:3px solid var(--act-c);
+  }
+  .legend .num{font-family:"JetBrains Mono"; font-size:.72rem; color:var(--ink-dim);}
+  .legend .name{font-family:"Syne"; font-weight:600; font-size:1.15rem; margin-top:4px;}
+  .legend .range{font-family:"JetBrains Mono"; font-size:.72rem; color:var(--ink-dim); margin-top:6px;}
+  .legend .phase{font-size:.86rem; color:var(--ink-dim); margin-top:8px;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--rule);}
+  section:last-of-type{border-bottom:none;}
+  .kicker{
+    font-family:"JetBrains Mono";
+    font-size:.72rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--vermilion);
+    margin-bottom:10px;
+  }
+  section h2{font-size:clamp(1.6rem,3vw,2.1rem); margin-bottom:22px;}
+  section p{color:var(--ink); max-width:680px;}
+  section p.dim{color:var(--ink-dim);}
+
+  .constraint-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin-top:26px;
+  }
+  .constraint{
+    background:var(--bg-raised);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:16px 18px;
+    box-shadow:var(--shadow);
+  }
+  .constraint .tag{
+    font-family:"JetBrains Mono";font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-dim); margin-bottom:8px; display:block;
+  }
+  .constraint.no .tag{color:var(--red);}
+  .constraint.yes .tag{color:var(--act1);}
+  .constraint p{font-size:.92rem;margin:0;color:var(--ink);max-width:none;}
+  .constraint ul.links{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .constraint ul.links li{font-size:.86rem;line-height:1.35;}
+  .constraint ul.links a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px;}
+  .constraint ul.links .plat{font-family:"JetBrains Mono";font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--vermilion);margin-right:6px;}
+  .constraint ul.links .note{display:block;color:var(--ink-dim);font-size:.8rem;margin-top:2px;}
+  .constraint.review .tag{color:var(--amber);}
+
+  /* ---------- EVIDENCE GALLERY ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+    margin-top:30px;
+  }
+  figure.card{
+    margin:0;
+    background:var(--bg-raised);
+    border:1px solid var(--rule);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  figure.card img{display:block;width:100%;height:150px;object-fit:cover;background:var(--bg-sunken);}
+  figure.card figcaption{padding:12px 14px 15px;}
+  figure.card .family{
+    font-family:"JetBrains Mono";font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--vermilion);
+  }
+  figure.card .read{font-size:.86rem;color:var(--ink-dim);margin-top:6px;}
+  figure.card.excluded{opacity:.72; border-style:dashed;}
+  figure.card.excluded .family{color:var(--red);}
+  figure.card.excluded img{filter:grayscale(.35);}
+
+  /* ---------- ACT DETAIL ---------- */
+  .act-block{
+    border-left:4px solid var(--act-c);
+    padding-left:24px;
+    margin-top:36px;
+  }
+  .act-block:first-of-type{margin-top:30px;}
+  .act-block .act-label{
+    font-family:"JetBrains Mono";font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--act-c);
+  }
+  .act-block h3{font-size:1.5rem;margin-top:6px;}
+  .act-block .range{font-family:"JetBrains Mono";font-size:.78rem;color:var(--ink-dim);margin-top:4px;display:block;}
+  .act-meta{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+    margin-top:16px;
+  }
+  .act-meta div{font-size:.9rem;}
+  .act-meta .label{font-family:"JetBrains Mono";font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);display:block;margin-bottom:4px;}
+
+  /* ---------- SPINE DIAGRAM ---------- */
+  .spine-list{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .spine-list li{
+    background:var(--bg-raised);border:1px solid var(--rule);border-radius:6px;
+    padding:16px 18px;display:grid;grid-template-columns:140px 1fr;gap:16px;box-shadow:var(--shadow);
+  }
+  .spine-list .name{font-family:"Syne";font-weight:600;font-size:1.05rem;}
+  .spine-list p{margin:0;font-size:.92rem;color:var(--ink-dim);max-width:none;}
+  @media (max-width:640px){.spine-list li{grid-template-columns:1fr;}}
+
+  /* ---------- TABLE ---------- */
+  .table-wrap{overflow-x:auto;margin-top:18px;border:1px solid var(--rule);border-radius:8px;}
+  table{border-collapse:collapse;width:100%;min-width:760px;font-size:.86rem;}
+  thead th{
+    text-align:left;background:var(--bg-sunken);
+    font-family:"JetBrains Mono";font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink-dim);padding:10px 14px;border-bottom:1px solid var(--rule);white-space:nowrap;
+  }
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--chip-bg);}
+  td.id{font-family:"JetBrains Mono";color:var(--ink-dim);white-space:nowrap;}
+  td.title{font-weight:600;white-space:nowrap;}
+  td.intent{color:var(--ink-dim);min-width:260px;}
+  .chip{
+    display:inline-block;font-family:"JetBrains Mono";font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:3px 8px;border-radius:20px;white-space:nowrap;
+  }
+  .chip.anchor{background:var(--act-c);color:var(--bg-raised);}
+  .chip.connective{background:transparent;border:1px solid var(--rule);color:var(--ink-dim);}
+  .chip.interlude{background:var(--amber);color:var(--bg-raised);}
+  .device{font-family:"JetBrains Mono";font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--vermilion);display:block;margin-bottom:3px;}
+  td.link{color:var(--ink-dim);min-width:240px;}
+  .device-key{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:20px 0 28px;}
+  .device-key div{background:var(--bg-raised);border:1px solid var(--rule);border-radius:6px;padding:10px 14px;font-size:.84rem;box-shadow:var(--shadow);}
+
+  /* ---------- STYLEFRAME BOARD ---------- */
+  .sf-legend{display:flex;flex-wrap:wrap;gap:16px;margin:18px 0 8px;font-size:.82rem;color:var(--ink-dim);}
+  .sf-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sf-legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .sf-act-heading{margin:34px 0 4px;font-family:"JetBrains Mono";font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--act-c);}
+  .sf-act-heading:first-of-type{margin-top:22px;}
+  .sf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-top:12px;}
+  .sf-card{background:var(--bg-raised);border:1px solid var(--rule);border-left:4px solid var(--act-c);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);}
+  .sf-card img{display:block;width:100%;height:120px;object-fit:cover;background:var(--bg-sunken);}
+  .sf-card .ph{width:100%;height:120px;background:repeating-linear-gradient(45deg,var(--bg-sunken),var(--bg-sunken) 9px,var(--rule) 9px,var(--rule) 10px);display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:.66rem;text-align:center;padding:10px;font-family:"JetBrains Mono";line-height:1.4;}
+  .sf-card .meta{padding:9px 11px 11px;}
+  .sf-card .sf-id{font-family:"JetBrains Mono";font-size:.66rem;color:var(--ink-dim);}
+  .sf-card .sf-title{font-family:"Syne";font-weight:600;font-size:.92rem;margin-top:2px;line-height:1.25;}
+  .sf-card .sf-status{display:inline-block;margin-top:7px;font-family:"JetBrains Mono";font-size:.58rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:20px;}
+  .sf-status.exists{background:var(--act-c);color:var(--bg-raised);}
+  .sf-status.derived{border:1px solid var(--rule);color:var(--ink-dim);}
+  .sf-status.pending{border:1px dashed var(--vermilion);color:var(--vermilion);}
+
+  /* ---------- STATUS / NEXT STEPS ---------- */
+  .status-list{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .status-list li{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--bg-raised);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .status-dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:none;background:var(--ink-dim);}
+  .status-list li.pending .status-dot{background:var(--amber);}
+  .status-list li p{margin:0;font-size:.92rem;}
+  .status-list .label{font-weight:600;display:block;margin-bottom:2px;}
+
+  ol.steps{margin:24px 0 0;padding-left:0;list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:16px;}
+  ol.steps li{counter-increment:step;display:grid;grid-template-columns:34px 1fr;gap:14px;}
+  ol.steps li::before{
+    content:counter(step);font-family:"JetBrains Mono";font-weight:600;color:var(--vermilion);
+    border:1px solid var(--rule);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:.8rem;
+  }
+  ol.steps p{margin:0;font-size:.92rem;color:var(--ink-dim);}
+  ol.steps .name{font-weight:600;color:var(--ink);}
+
+  footer{padding:40px 0 60px;}
+  footer p{font-size:.8rem;color:var(--ink-dim);}
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="seam"></div>
+    <div class="eyebrow">Visual Direction — Live Screen Content</div>
+    <h1>Everywhere Is <em>Carried</em></h1>
+    <p class="hero-sub">Places Become Us, restructured as one continuous cinematic show — mapped song by song across all 46 tracks, built from what's actually been made and approved so far.</p>
+    <p class="hero-meta">Restructured direction · <span class="mono">11 Sept 2026</span> · supersedes all water/shore treatments · governing brief: <span class="mono">Concept Foundation v3</span></p>
+  </div>
+</div>
+
+<div class="legend">
+  <a href="#act-1" style="--act-c:var(--act1)"><span class="num mono">ACT I · 1A–1L</span><div class="name">Where It Starts</div><div class="range">12 cues</div><div class="phase">Origin — the personal image before the journey</div></a>
+  <a href="#act-2" style="--act-c:var(--act2)"><span class="num mono">ACT II · 2A–2N</span><div class="name">Carried</div><div class="range">14 cues</div><div class="phase">Departure — the bus grammar, focus and light</div></a>
+  <a href="#act-3" style="--act-c:var(--act3)"><span class="num mono">ACT III · 3A–3N</span><div class="name">Multiply</div><div class="range">12 cues</div><div class="phase">Growth — one frame becomes a field of frames</div></a>
+  <a href="#act-4" style="--act-c:var(--act4)"><span class="num mono">ACT IV · 4A–4H</span><div class="name">Everywhere</div><div class="range">8 cues</div><div class="phase">Arrival — the private world as shared horizon</div></a>
+</div>
+
+<div class="wrap">
+
+<section id="styleframes">
+  <div class="kicker">01 — Styleframe Board</div>
+  <h2 class="prose">What's actually assigned to each song, today</h2>
+  <p class="prose dim">Every one of the 46 cues, mapped to the real image behind it — not a mood board, an inventory. Anything not yet locked is marked plainly as not yet produced, rather than standing in on a borrowed image.</p>
+  <div class="constraint" style="margin:0 0 24px;max-width:680px;">
+    <span class="tag">Hard rule — camera framing</span>
+    <p>Everything here is screen content flanking a live performer on stage, not a movie shot. Every frame is dead-center, on-axis and symmetrical — no three-quarter angles, no Dutch tilt, no candid perspective. An off-axis composition reads as a video playing on a screen; a symmetrical one reads as content built for the space. This applies to every future styleframe from here forward.</p>
+  </div>
+  <div class="sf-legend">
+    <span><span class="dot" style="background:var(--act1)"></span>Confirmed styleframe</span>
+    <span><span class="dot" style="background:transparent;border:1px dashed var(--vermilion)"></span>Not yet produced</span>
+  </div>
+
+  <div class="sf-act-heading" style="--act-c:var(--act1)">Act I — Where It Starts</div>
+  <div class="sf-grid" style="--act-c:var(--act1)">
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1A_intro.jpg" alt="The seam"><div class="meta"><div class="sf-id">1A</div><div class="sf-title">Intro</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1B_teef_teef.png" alt="Seam widened into a full red-lacquered frame"><div class="meta"><div class="sf-id">1B</div><div class="sf-title">Teef Teef</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1C_shitor.png" alt="Weathered plaster ground resolved inside the frame"><div class="meta"><div class="sf-id">1C</div><div class="sf-title">Shitor</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1D_anointing.png" alt="Plaster ground caught mid-flicker"><div class="meta"><div class="sf-id">1D</div><div class="sf-title">Anointing</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1E_fefe_ne_fefe.png" alt="Extreme close-up of the rose on red silk"><div class="meta"><div class="sf-id">1E</div><div class="sf-title">Fefe Ne Fefe</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1F_tilapia.png" alt="Rose and hat frame pair, dedicated generation"><div class="meta"><div class="sf-id">1F</div><div class="sf-title">Tilapia</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1G_ohema.png" alt="Two identical empty plaster frames side by side"><div class="meta"><div class="sf-id">1G</div><div class="sf-title">Ohema</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1H_hollup.png" alt="The two frames now joined by a taut glowing red thread"><div class="meta"><div class="sf-id">1H</div><div class="sf-title">Hollup</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1I_dabebi.png" alt="Red thread meeting a rain-streaked bus window edge"><div class="meta"><div class="sf-id">1I</div><div class="sf-title">Dabebi</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1J_bus_stop.png" alt="Bus window with a red interior glow rising behind it"><div class="meta"><div class="sf-id">1J</div><div class="sf-title">Bus Stop</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/1K_property.png" alt="Window and red glow settled, plaster texture visible beneath"><div class="meta"><div class="sf-id">1K</div><div class="sf-title">Property</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">1L</div><div class="sf-title">Surrender</div><span class="sf-status exists">✓</span></div></div>
+  </div>
+
+  <div class="sf-act-heading" style="--act-c:var(--act2)">Act II — Carried</div>
+  <div class="sf-grid" style="--act-c:var(--act2)">
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2A_bankulize.jpg" alt="Empty stool, alcove"><div class="meta"><div class="sf-id">2A</div><div class="sf-title">Bankulize (Acoustic)</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2B_she_loves_me.png" alt="Arched alcove, red border pulled back toward canvas edge"><div class="meta"><div class="sf-id">2B</div><div class="sf-title">She Loves Me</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2C_africa_unite.png" alt="Aged degraded archival film frame"><div class="meta"><div class="sf-id">2C</div><div class="sf-title">Africa Unite Medley</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2D_legalize.png" alt="Archival frame beside a clean present-day frame"><div class="meta"><div class="sf-id">2D</div><div class="sf-title">Legalize</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">2E</div><div class="sf-title">We Dey</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2F_notorious.png" alt="Dead-center bus window, rain streaks, level red handrail"><div class="meta"><div class="sf-id">2F</div><div class="sf-title">Notorious</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2G_saudi_arabia.png" alt="Bus window, red handrail racked into sharp foreground focus"><div class="meta"><div class="sf-id">2G</div><div class="sf-title">Saudi Arabia</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2H_cherry.png" alt="Bus window, handrail catching warmer light and a longer reflection"><div class="meta"><div class="sf-id">2H</div><div class="sf-title">Cherry</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2I_baby_im_jealous.png" alt="Passenger silhouettes in window row"><div class="meta"><div class="sf-id">2I</div><div class="sf-title">Baby I'm Jealous</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2J_chicken_curry.png" alt="Symmetrical bus aisle, warm light at rear door"><div class="meta"><div class="sf-id">2J</div><div class="sf-title">Chicken Curry</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2K_corny.png" alt="Bus aisle, red glow spreading from rear door"><div class="meta"><div class="sf-id">2K</div><div class="sf-title">Corny</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2L_miss_you_bad.png" alt="Black rose in red bus window"><div class="meta"><div class="sf-id">2L</div><div class="sf-title">Miss You Bad</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2M_that_way.png" alt="Red-bordered square with black rose, shifted toward dusk blue"><div class="meta"><div class="sf-id">2M</div><div class="sf-title">That Way</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/2N_london_town.png" alt="Dead-center rear view of the Lagos to London bus, dissolving into light streaks"><div class="meta"><div class="sf-id">2N</div><div class="sf-title">London Town</div><span class="sf-status exists">✓</span></div></div>
+  </div>
+
+  <div class="sf-act-heading" style="--act-c:var(--act3)">Act III — Multiply</div>
+  <div class="sf-grid" style="--act-c:var(--act3)">
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3A_nobody.jpg" alt="Triptych, dancers"><div class="meta"><div class="sf-id">3A</div><div class="sf-title">Nobody (Ama version)</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3B_como_un_bebe.png" alt="Triptych, panels drifting to independent colour grades"><div class="meta"><div class="sf-id">3B</div><div class="sf-title">Como Un Bebe</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3C_patek.png" alt="Triptych with two small frames fading in at outer edges"><div class="meta"><div class="sf-id">3C</div><div class="sf-title">Patek</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3D</div><div class="sf-title">Werser</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3E_see_something.png" alt="Frame constellation"><div class="meta"><div class="sf-id">3E</div><div class="sf-title">See Something</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3F</div><div class="sf-title">Sekkle and Bop</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3I</div><div class="sf-title">Dance For Me</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3J</div><div class="sf-title">Open and Close (Diplo)</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3K</div><div class="sf-title">Shasha Ku Shasha</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3L_akwaaba.png" alt="Red-framed doorway opening onto warm light beyond"><div class="meta"><div class="sf-id">3L</div><div class="sf-title">Akwaaba</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">3M</div><div class="sf-title">Oh My Gawdd</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/3N_see_what_weve_done.png" alt="Six-panel contact sheet, stand-in for the aligned mosaic"><div class="meta"><div class="sf-id">3N</div><div class="sf-title">See What We've Done</div><span class="sf-status exists">✓</span></div></div>
+  </div>
+
+  <div class="sf-act-heading" style="--act-c:var(--act4)">Act IV — Everywhere</div>
+  <div class="sf-grid" style="--act-c:var(--act4)">
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4A</div><div class="sf-title">Short Skirt</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4B</div><div class="sf-title">Bad Vibes</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/4C_skintight.png" alt="Eclipse corona ring"><div class="meta"><div class="sf-id">4C</div><div class="sf-title">Skintight</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4D</div><div class="sf-title">Supernova</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4E</div><div class="sf-title">Pour Me Water</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4F</div><div class="sf-title">Leg Over</div><span class="sf-status pending"></span></div></div>
+    <div class="sf-card"><img src="./assets/mr-eazi/cues/4G_let_me_live.png" alt="Golden arch over skyline"><div class="meta"><div class="sf-id">4G</div><div class="sf-title">Let Me Live (Major Lazer)</div><span class="sf-status exists">✓</span></div></div>
+    <div class="sf-card"><div class="ph"></div><div class="meta"><div class="sf-id">4H</div><div class="sf-title">Exit</div><span class="sf-status pending"></span></div></div>
+  </div>
+</section>
+
+
+<section id="evidence">
+  <div class="kicker">02 — The Evidence</div>
+  <h2 class="prose">What's actually been made and liked</h2>
+  <p class="prose dim">Sorted by what the images <em>do</em>, not by which song they were made for. Five families recur independently of title or era — these are the load-bearing ideas the restructured direction is built from.</p>
+
+  <div class="gallery">
+    <figure class="card">
+      <img src="./images/f19801e202f1353509b9745bca3b5cb3.jpg" alt="A single vertical line of light splitting a black field">
+      <figcaption><span class="family">The Seam</span><p class="read">One bright vertical crack in total black — the recurring opening/closing device, already established at both ends of the timeline.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/955d049e9b62c723453ce096a8983b9e.png" alt="A seam opening between a cool blue panel and a warm amber panel">
+      <figcaption><span class="family">The Seam</span><p class="read">The same crack, now dividing two colour temperatures — proof the device already carries an act-to-act palette shift.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/b48de59f7b3b56a488c3480e2a5b29b5.png" alt="Two square portals, one warm and dark, one cool and lit">
+      <figcaption><span class="family">The Seam</span><p class="read">A second, squarer variant of the same idea — a threshold rather than a crack. Same function, different geometry.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/d091a144f877b54c9d00f6bf136274b6.png" alt="A black rose inside a red-framed bus window">
+      <figcaption><span class="family">The Carried Frame</span><p class="read">Something Else's rose motif, now inset inside the Lagos-to-London bus window — two eras occupying one frame at once.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/9ee97e53e436ce5cb8969bfaf6a7b283.png" alt="Row of bus windows with blurred passenger silhouettes at dusk">
+      <figcaption><span class="family">The Bus Grammar</span><p class="read">The vehicle read as a row of frames, not an icon — passengers as silhouette, light doing the emotional work.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/6e2980050f25be667c16519028accb4c.jpg" alt="Three-panel screen showing the same blurred dancing crowd in different colour temperatures">
+      <figcaption><span class="family">Multiplication</span><p class="read">One action, three panels, three temperatures — growth as repetition, exactly as the brief asks for it.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/64b204fc7dcdc10257e1cbb976b950da.png" alt="A contact-sheet strip of six frames showing the same crowd re-graded in red, gold and green">
+      <figcaption><span class="family">Multiplication</span><p class="read">The same idea as film stock — one strip, six regrades. A ready-made device for repeating a motif across acts.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/e74566f76840af2ecae8bbe333a33269.png" alt="Many small framed photographs floating in dark space, tethered by thin red threads">
+      <figcaption><span class="family">Multiplication</span><p class="read">Private memory made into a shared field — dozens of small tethered frames instead of one big scene.</p></figcaption>
+    </figure>
+    <figure class="card">
+      <img src="./images/175f78110696035fa4d7ae8e1a9f70b4.png" alt="A glowing golden arch over a miniature city skyline">
+      <figcaption><span class="family">Threshold &amp; Arrival</span><p class="read">The clearest existing image of the show's final idea — the private world resolving into a shared horizon.</p></figcaption>
+    </figure>
+    <figure class="card excluded">
+      <img src="./images/b908e793cdbefd7841b693f9fc0d02e4.png" alt="Red-framed collage ending in an ocean sunset, now excluded">
+      <figcaption><span class="family">Excluded</span><p class="read">Strong composition, wrong subject — the ocean horizon is a water body. Kept only as a record of what not to extend.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="direction">
+  <div class="kicker">03 — The Restructured Direction</div>
+  <h2 class="prose">One film, four acts — mapped onto the show's own structure</h2>
+  <p class="prose dim">Rather than treating each song as its own scenography, the direction uses the show script's existing four colour-coded sections as the film's own act breaks. The team already divided the night this way for lighting and blocking purposes; this direction reads that division as a story.</p>
+
+  <div class="act-block" id="act-1" style="--act-c:var(--act1)">
+    <span class="act-label">Act I</span>
+    <h3>Where It Starts</h3>
+    <span class="range">1A INTRO → 1L Surrender</span>
+    <p>The frame-grammar world is established from nothing: a single seam of light in black, then one red-edged frame holding one private image. No journey yet — only the place, and the image it leaves behind.</p>
+    <div class="act-meta">
+      <div><span class="label">Dominant device</span>The Seam · single frame</div>
+      <div><span class="label">Palette</span>Black ground, ember amber, first red</div>
+      <div><span class="label">Carried forward</span>A red thread, stretched but not yet crossed</div>
+    </div>
+  </div>
+
+  <div class="act-block" id="act-2" style="--act-c:var(--act2)">
+    <span class="act-label">Act II</span>
+    <h3>Carried</h3>
+    <span class="range">2A Bankulize (Acoustic) → 2N London Town</span>
+    <p>Opens on the script's own blocking note for 2A — mid-stage, solo spot — read on screen as the show's only true solo frame: one small image in a vast dark field. From there the Lagos-to-London bus grammar fully arrives, its own window and handrail accumulating focus and warmth as the ride continues, and the act closes on a partial, dissolving exterior reveal.</p>
+    <div class="act-meta">
+      <div><span class="label">Dominant device</span>Bus window row · red thread</div>
+      <div><span class="label">Palette</span>Wet glass amber, dusk blue, ember red</div>
+      <div><span class="label">Carried forward</span>The vehicle, now spent — it will not return at full scale</div>
+    </div>
+  </div>
+
+  <div class="act-block" id="act-3" style="--act-c:var(--act3)">
+    <span class="act-label">Act III</span>
+    <h3>Multiply</h3>
+    <span class="range">3A Nobody → 3N See What We've Done</span>
+    <p>The single arrival frame fractures into a triptych, then a field of dozens of tethered frames — the private history becomes a shared one. Objects from Acts I and II reappear here only as one tile among many, never restaged at their original scale.</p>
+    <div class="act-meta">
+      <div><span class="label">Dominant device</span>Frame constellation · colour-shifted repeats</div>
+      <div><span class="label">Palette</span>Vermilion rising, warm gold accents</div>
+      <div><span class="label">Carried forward</span>The mosaic itself, about to be seen as one picture</div>
+    </div>
+  </div>
+
+  <div class="act-block" id="act-4" style="--act-c:var(--act4)">
+    <span class="act-label">Act IV</span>
+    <h3>Everywhere</h3>
+    <span class="range">4A Short Skirt → 4H Exit</span>
+    <p>The mosaic resolves into a single wide arch; pyro peaks play against a corona/eclipse device already built for this purpose. The skyline behind the arch is the show's widest image — after which the frame narrows back down to the exact seam that opened Act I, now closing.</p>
+    <div class="act-meta">
+      <div><span class="label">Dominant device</span>The Arch · skyline horizon</div>
+      <div><span class="label">Palette</span>Full gold, corona white, closing black</div>
+      <div><span class="label">Carried forward</span>Nothing — the seam closes on the show, not on an object</div>
+    </div>
+  </div>
+</section>
+
+<section id="spine">
+  <div class="kicker">04 — The Spine System</div>
+  <h2 class="prose">What actually holds 46 songs together</h2>
+  <p class="prose dim">Three devices repeat across every act at different scale and colour. Naming them once here means no future styleframe has to reinvent how it connects to the one before it.</p>
+  <ul class="spine-list">
+    <li><span class="name">The Seam</span><p>The vertical light-crack that opens Act I and closes Act IV. Every act inherits it in that act's colour — amber in Act I, split blue/amber in Act II, vermilion in Act III, full gold in Act IV. It is the only device that is allowed to touch every single track.</p></li>
+    <li><span class="name">The Thread</span><p>A thin red line that physically connects two frames on screen. It is how an object is shown being <em>carried</em> rather than cut to — the rose reaching the hat, the bus window reaching the Maison Rouge interior, one small frame reaching the next in the Act III constellation.</p></li>
+    <li><span class="name">Carried Objects</span><p>The bus, the rose-and-hat pair, the red interior. Each enters exactly once at full scale, in the act where its song lives, then only ever reappears afterward as one tile inside a larger field — never restaged as the main subject a second time.</p></li>
+  </ul>
+</section>
+
+<section id="map">
+  <div class="kicker">05 — Full Show Map</div>
+  <h2 class="prose">All 46 cues, act by act</h2>
+  <p class="prose dim">Anchor cues introduce or carry a defining motif forward. Connective cues hold or extend the current frame without adding a new object — this is the ambient majority of the show. This is a map of intent, not a finished shot list: per the brief's development method, each anchor gets its own three-frame styleframe pass (entry / transformation / exit) before production extends to the connective cues around it.</p>
+  <p class="prose dim">Every row also carries its <strong>link to the next cue</strong> — the specific thing that happens at the join so it never reads as two clips cut together. Every join in the show is one of six repeatable devices, reused across all four acts rather than invented fresh each time:</p>
+  <div class="device-key">
+    <div><span class="device">Texture Hold</span>Geometry stays exactly where it is; only surface, grain or colour changes underneath.</div>
+    <div><span class="device">Edge Reveal</span>The new element enters exactly at the edge of what's already on screen, never mid-frame.</div>
+    <div><span class="device">Rack Focus Swap</span>Foreground and background trade places through a focus pull — no cut.</div>
+    <div><span class="device">Enlarge-in-Place</span>One frame already on screen grows to dominate, without repositioning.</div>
+    <div><span class="device">Reveal-Through-Fade / Widen</span>The current frame's own boundary dissolves or widens to expose what's next.</div>
+    <div><span class="device">Shape-Morph</span>A light source or object changes shape or proportion while staying the same light source.</div>
+  </div>
+
+  <div class="table-wrap" style="--act-c:var(--act1)">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Role</th><th>Motif</th><th>Visual intent</th><th>Link to next</th></tr></thead>
+      <tbody>
+        <tr><td class="id">1A</td><td class="title">Intro</td><td><span class="chip interlude">Interlude</span></td><td>The Seam</td><td class="intent">Total black; the seam ignites and holds. Nothing crosses it yet.</td><td class="link"><span class="device">Edge Reveal</span>Black recedes into a red-edged frame around the same amber source.</td></tr>
+        <tr><td class="id">1B</td><td class="title">Teef Teef</td><td><span class="chip connective">Connective</span></td><td>The Seam</td><td class="intent">The seam widens into one red-edged frame, still empty.</td><td class="link"><span class="device">Texture Hold</span>Frame locked; grain and texture settle into the same red ground.</td></tr>
+        <tr><td class="id">1C</td><td class="title">Shitor</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">Frame steadies; weathered-wall grain settles inside it.</td><td class="link"><span class="device">Texture Hold</span>Same frame, cut speed only — no geometry change.</td></tr>
+        <tr><td class="id">1D</td><td class="title">Anointing (short, sped)</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">Sped-up variant of the same held frame, cut to the edit.</td><td class="link"><span class="device">Texture Hold</span>Tempo settles as the rose fades up in the same red ground.</td></tr>
+        <tr><td class="id">1E</td><td class="title">Fefe Ne Fefe</td><td><span class="chip anchor" style="--act-c:var(--act1)">Anchor</span></td><td>First object</td><td class="intent">A single rose on a red ground enters the frame — Something Else's premonition, held still.</td><td class="link"><span class="device">Texture Hold</span>Rose dissolves as the ground shifts from red to plaster.</td></tr>
+        <tr><td class="id">1F</td><td class="title">Tilapia</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">Ground shifts from red to weathered plaster; the object recedes to suggestion.</td><td class="link"><span class="device">Edge Reveal</span>A second frame fades in at the first frame's right edge, matching scale.</td></tr>
+        <tr><td class="id">1G</td><td class="title">Ohema</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">A second frame appears beside the first; neither touches yet.</td><td class="link"><span class="device">Edge Reveal</span>A red thread fades in between the two static frames.</td></tr>
+        <tr><td class="id">1H</td><td class="title">Hollup</td><td><span class="chip connective">Connective</span></td><td>The Thread</td><td class="intent">The two frames drift closer; a red thread begins to stretch between them.</td><td class="link"><span class="device">Shape-Morph</span>Where the thread lands, that frame's content dissolves into a bus-window edge.</td></tr>
+        <tr><td class="id">1I</td><td class="title">Dabebi</td><td><span class="chip anchor" style="--act-c:var(--act1)">Anchor</span></td><td>Bus (seed)</td><td class="intent">The thread completes; through it, the first edge of a bus window appears — the journey seeded, not yet full scale.</td><td class="link"><span class="device">Edge Reveal</span>A red interior sliver crossfades in beside the window edge.</td></tr>
+        <tr><td class="id">1J</td><td class="title">Bus Stop</td><td><span class="chip anchor" style="--act-c:var(--act1)">Anchor</span></td><td>Bus × Maison Rouge</td><td class="intent">A red interior sliver appears behind the window edge — the two eras first touch.</td><td class="link"><span class="device">Texture Hold</span>Composition locked; plaster texture reasserts under both elements.</td></tr>
+        <tr><td class="id">1K</td><td class="title">Property</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">Interior/exterior tension holds; weathered wall texture returns beneath both.</td><td class="link"><span class="device">Reveal-Through-Widen</span>Both inner frames dissolve outward into the single seam shape that opened the act.</td></tr>
+        <tr><td class="id">1L</td><td class="title">Surrender</td><td><span class="chip anchor" style="--act-c:var(--act1)">Anchor · Act close</span></td><td>The Seam</td><td class="intent">The Act I seam returns at full width — a true threshold, unlit beyond it. Uncrossed.</td><td class="link"><span class="device">Shape-Morph</span>The full-width seam narrows and desaturates into the solo spotlight that opens 2A.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" style="--act-c:var(--act2); margin-top:26px;">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Role</th><th>Motif</th><th>Visual intent</th><th>Link to next</th></tr></thead>
+      <tbody>
+        <tr><td class="id">2A</td><td class="title">Bankulize (Acoustic)</td><td><span class="chip interlude">Interlude</span></td><td>Solo frame</td><td class="intent">Per the script's own blocking (stool, solo spot): one small still image in a vast dark field — the show's only true solo frame.</td><td class="link"><span class="device">Reveal-Through-Widen</span>Room and stool hold; the frame's black border recedes outward.</td></tr>
+        <tr><td class="id">2B</td><td class="title">She Loves Me</td><td><span class="chip connective">Connective</span></td><td>Solo frame</td><td class="intent">The lone frame begins to widen back toward the edges of the canvas.</td><td class="link"><span class="device">Edge Reveal</span>A second, cooler archive frame fades in at the scale just reached.</td></tr>
+        <tr><td class="id">2C</td><td class="title">Africa Unite Medley (Majek Fashek)</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor</span></td><td>Lineage</td><td class="intent">An archival-grain frame enters beside the present one — influence acknowledged, not restaged.</td><td class="link"><span class="device">Texture Hold</span>Both frames hold position and grain, unresolved.</td></tr>
+        <tr><td class="id">2D</td><td class="title">Legalize</td><td><span class="chip connective">Connective</span></td><td>Frame</td><td class="intent">Archive and present frame hold side by side, unresolved.</td><td class="link"><span class="device">Reveal-Through-Widen</span>The two static frames dissolve outward into the reopened Act I seam shape.</td></tr>
+        <tr><td class="id">2E</td><td class="title">We Dey</td><td><span class="chip connective">Connective</span></td><td>The Seam</td><td class="intent">The Act I threshold reopens; light begins streaking through it, not yet identified as transit.</td><td class="link"><span class="device">Shape-Morph</span>The seam's vertical light source stretches into the bus window's horizontal motion-blur.</td></tr>
+        <tr><td class="id">2F</td><td class="title">Notorious</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor</span></td><td>Bus grammar</td><td class="intent">Streaking light resolves into a bus window interior — wet glass, red handrail, city light passing.</td><td class="link"><span class="device">Rack Focus Swap</span>The red handrail racks into sharp foreground focus against the blurred window.</td></tr>
+        <tr><td class="id">2G</td><td class="title">Saudi Arabia</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor</span></td><td>Bus grammar</td><td class="intent">The handrail holds sharp in the foreground; the streaking window behind it softens further.</td><td class="link"><span class="device">Texture Hold</span>Handrail holds position; only its lacquer's light warms further.</td></tr>
+        <tr><td class="id">2H</td><td class="title">Cherry</td><td><span class="chip connective">Connective</span></td><td>Bus grammar</td><td class="intent">Handrail holds; its reflection lengthens as interior colour warms.</td><td class="link"><span class="device">Rack Focus Swap</span>The handrail recedes to background as the bus window returns to focus.</td></tr>
+        <tr><td class="id">2I</td><td class="title">Baby I'm Jealous</td><td><span class="chip connective">Connective</span></td><td>Bus grammar</td><td class="intent">Passenger silhouettes appear in the window row for the first time.</td><td class="link"><span class="device">Reveal-Through-Widen</span>The window frame holds as the walls pull back to reveal the full aisle.</td></tr>
+        <tr><td class="id">2J</td><td class="title">Chicken Curry</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor</span></td><td>Bus grammar</td><td class="intent">Full bus interior reveal — aisle, seats, warm light at the far door. The vehicle is fully present.</td><td class="link"><span class="device">Edge Reveal</span>A red interior plane bleeds in from the same far window that closed this shot.</td></tr>
+        <tr><td class="id">2K</td><td class="title">Corny</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor</span></td><td>Bus × Maison Rouge</td><td class="intent">A red interior plane bleeds into the bus's far window — two eras in one frame.</td><td class="link"><span class="device">Reveal-Through-Widen (reverse)</span>The aisle recedes back to a single window, landing on the rose-in-window shot.</td></tr>
+        <tr><td class="id">2L</td><td class="title">Miss You Bad</td><td><span class="chip connective">Connective</span></td><td>Postcard pair</td><td class="intent">Bus grammar softens; the black rose motif appears alone in a window.</td><td class="link"><span class="device">Texture Hold</span>Square and rose hold position; only colour temperature shifts warm to dusk.</td></tr>
+        <tr><td class="id">2M</td><td class="title">That Way</td><td><span class="chip connective">Connective</span></td><td>Bus grammar</td><td class="intent">Window light shifts to dusk blue; the red square dims to ember.</td><td class="link"><span class="device">Reveal-Through-Widen</span>The dusk window dissolves at its edges into light lines that resolve into the bus exterior.</td></tr>
+        <tr><td class="id">2N</td><td class="title">London Town</td><td><span class="chip anchor" style="--act-c:var(--act2)">Anchor · Act close</span></td><td>Bus (arrival)</td><td class="intent">First and only partial exterior reveal, dissolving at its edges into directional light — arrival without full resolution.</td><td class="link"><span class="device">Shape-Morph</span>The unresolved exterior's light lines splinter into the three paths that become 3A's triptych.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" style="--act-c:var(--act3); margin-top:26px;">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Role</th><th>Motif</th><th>Visual intent</th><th>Link to next</th></tr></thead>
+      <tbody>
+        <tr><td class="id">3A</td><td class="title">Nobody (Ama version)</td><td><span class="chip anchor" style="--act-c:var(--act3)">Anchor · Act open</span></td><td>Triptych</td><td class="intent">The arrival frame fractures into three panels; one silhouette moves across all of them at once.</td><td class="link"><span class="device">Texture Hold</span>Triptych geometry locked; each panel's grade shifts independently.</td></tr>
+        <tr><td class="id">3B</td><td class="title">Como Un Bebe</td><td><span class="chip connective">Connective</span></td><td>Triptych</td><td class="intent">Panels shift colour independently — same content, three emotional registers.</td><td class="link"><span class="device">Edge Reveal</span>A fourth and fifth frame fade in at the triptych's outer edges.</td></tr>
+        <tr><td class="id">3C</td><td class="title">Patek</td><td><span class="chip connective">Connective</span></td><td>Multiplication</td><td class="intent">A fourth and fifth small frame appear at the edges — the field is filling.</td><td class="link"><span class="device">Edge Reveal</span>Red threads fade in connecting the five frames.</td></tr>
+        <tr><td class="id">3D</td><td class="title">Werser</td><td><span class="chip connective">Connective</span></td><td>The Thread</td><td class="intent">Frames begin tethering to one another; no longer isolated.</td><td class="link"><span class="device">Edge Reveal</span>The threaded cluster seeds a field of dozens more frames around it.</td></tr>
+        <tr><td class="id">3E</td><td class="title">See Something</td><td><span class="chip anchor" style="--act-c:var(--act3)">Anchor</span></td><td>Constellation</td><td class="intent">The full frame-constellation appears: dozens of tethered images drifting in dark space.</td><td class="link"><span class="device">Texture Hold</span>Constellation geometry locked; brightness only begins pulsing in rhythm.</td></tr>
+        <tr><td class="id">3F</td><td class="title">Sekkle and Bop</td><td><span class="chip connective">Connective</span></td><td>Constellation</td><td class="intent">Constellation animates — frames drift and brighten in rhythm.</td><td class="link"><span class="device">Enlarge-in-Place</span>The centre-most frame scales up to dominate as the rest recede.</td></tr>
+        <tr><td class="id">3I</td><td class="title">Dance For Me</td><td><span class="chip anchor" style="--act-c:var(--act3)">Anchor</span></td><td>Collective figure</td><td class="intent">One constellation frame enlarges: a crowd in motion, warm light, wet reflective ground.</td><td class="link"><span class="device">Enlarge-in-Place (reverse) + Rack Focus</span>The crowd frame recedes to constellation scale as focus racks to a doorway within it.</td></tr>
+        <tr><td class="id">3J</td><td class="title">Open and Close (Diplo)</td><td><span class="chip connective">Connective</span></td><td>Constellation</td><td class="intent">Constellation and crowd frame alternate; doorways recur among the small frames.</td><td class="link"><span class="device">Texture Hold</span>Constellation and doorway hold; the whole field's cast shifts to vermilion.</td></tr>
+        <tr><td class="id">3K</td><td class="title">Shasha Ku Shasha</td><td><span class="chip connective">Connective</span></td><td>Constellation</td><td class="intent">The whole field shifts toward vermilion as the act peaks.</td><td class="link"><span class="device">Enlarge-in-Place</span>The same doorway frame enlarges again, this time opening fully.</td></tr>
+        <tr><td class="id">3L</td><td class="title">Akwaaba</td><td><span class="chip anchor" style="--act-c:var(--act3)">Anchor</span></td><td>Threshold</td><td class="intent">A doorway inside the constellation opens fully — an unambiguous welcome, warm light flooding through.</td><td class="link"><span class="device">Shape-Morph</span>The doorway's light stops being local and becomes the light source for the whole field.</td></tr>
+        <tr><td class="id">3M</td><td class="title">Oh My Gawdd</td><td><span class="chip connective">Connective</span></td><td>Constellation</td><td class="intent">Field intensity peaks; the thread network glows at its brightest.</td><td class="link"><span class="device">Reveal-Through-Widen</span>The brightened field flattens in perspective into a single aligned mosaic.</td></tr>
+        <tr><td class="id">3N</td><td class="title">See What We've Done</td><td><span class="chip anchor" style="--act-c:var(--act3)">Anchor · Act close</span></td><td>Mosaic</td><td class="intent">The constellation resolves into one wide frame — many small images legible at once, like a mosaic.</td><td class="link"><span class="device">Edge Reveal (mask)</span>The aligned mosaic is revealed to sit inside a single arch, closing in from its own outer edge.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap" style="--act-c:var(--act4); margin-top:26px;">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Role</th><th>Motif</th><th>Visual intent</th><th>Link to next</th></tr></thead>
+      <tbody>
+        <tr><td class="id">4A</td><td class="title">Short Skirt</td><td><span class="chip anchor" style="--act-c:var(--act4)">Anchor · Act open</span></td><td>The Arch</td><td class="intent">The mosaic recedes to reveal it was always inside a single arch, now glowing gold.</td><td class="link"><span class="device">Texture Hold</span>Arch holds; brightness rises and the floor gains a reflective sheen.</td></tr>
+        <tr><td class="id">4B</td><td class="title">Bad Vibes</td><td><span class="chip connective">Connective</span></td><td>Pyro peak</td><td class="intent">Arch holds, light intensifies; ground turns reflective ahead of the pyro peak.</td><td class="link"><span class="device">Shape-Morph</span>The same arch and light source contracts into the corona/eclipse ring.</td></tr>
+        <tr><td class="id">4C</td><td class="title">Skintight</td><td><span class="chip connective">Connective</span></td><td>Pyro peak</td><td class="intent">The corona/eclipse device plays as the pyro-cue visual — bright ring, dark centre.</td><td class="link"><span class="device">Texture Hold</span>The ring holds shape and position; only scale and brightness peak.</td></tr>
+        <tr><td class="id">4D</td><td class="title">Supernova</td><td><span class="chip anchor" style="--act-c:var(--act4)">Anchor</span></td><td>Pyro peak</td><td class="intent">Same corona device at maximum scale and brightness — the show's single brightest frame.</td><td class="link"><span class="device">Reveal-Through-Fade</span>The ring's brightness recedes, briefly revealing a bus window silhouette inside it.</td></tr>
+        <tr><td class="id">4E</td><td class="title">Pour Me Water</td><td><span class="chip anchor" style="--act-c:var(--act4)">Anchor</span></td><td>Bus (final return)</td><td class="intent">As the light recedes, the bus window silhouette reappears once, briefly, inside the arch.</td><td class="link"><span class="device">Shape-Morph</span>The window silhouette fades back into the ring, which widens back into the arch.</td></tr>
+        <tr><td class="id">4F</td><td class="title">Leg Over</td><td><span class="chip connective">Connective</span></td><td>The Arch</td><td class="intent">Arch steadies; a city skyline begins to resolve in silhouette inside it.</td><td class="link"><span class="device">Reveal-Through-Fade</span>A skyline resolves in silhouette within the arch's own negative space.</td></tr>
+        <tr><td class="id">4G</td><td class="title">Let Me Live (Major Lazer)</td><td><span class="chip anchor" style="--act-c:var(--act4)">Anchor</span></td><td>Skyline</td><td class="intent">Full golden arch over a lit skyline — the private world now a shared horizon, held wide.</td><td class="link"><span class="device">Shape-Morph</span>Skyline and arch dim together and contract to the exact seam that opened 1A.</td></tr>
+        <tr><td class="id">4H</td><td class="title">Exit</td><td><span class="chip anchor" style="--act-c:var(--act4)">Anchor · Show close</span></td><td>The Seam</td><td class="intent">The skyline dims; the frame narrows back to the single seam that opened Act I. Black.</td><td class="link">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="technical">
+  <div class="kicker">06 — Loop &amp; Transition Spec</div>
+  <h2 class="prose">How 46 loops become one film</h2>
+  <p class="prose dim">This is the direct answer to "must never feel like two clips edited together." It is a delivery rule, not a look.</p>
+  <ul class="spine-list">
+    <li><span class="name">True loops</span><p>Every track's visual is authored so its first frame and final frame match exactly. If a song runs longer than the authored loop, the repeat reads as continuous rhythm, never a jump.</p></li>
+    <li><span class="name">Seam-matched handoff</span><p>The last 1–2 seconds of every loop eases toward that act's seam colour and width; the next track's loop begins from that identical seam state. Editors always dissolve seam-to-seam — never content-to-content — regardless of final running order.</p></li>
+    <li><span class="name">Two-piece delivery per cue</span><p>Each track ships as a loop master plus a matched seam-out tail and seam-in head, so any two adjacent cues can be joined cleanly even if the setlist order shifts later.</p></li>
+    <li><span class="name">The one exception</span><p>2A Bankulize breaks the multi-frame grammar on purpose, matching its own scripted blocking. Its seam-in and seam-out are slower and dimmer than the surrounding cues, marking the tonal drop deliberately rather than smoothing over it.</p></li>
+  </ul>
+</section>
+
+</div>
+
+<div style="padding:48px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:0.75rem;opacity:0.5;">
+  <p>Built from the reference material approved so far and the confirmed show script.</p>
+</div>
+
+<!-- High Resolution Image Lightbox Modal -->
+<div id="art-lightbox" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px;cursor:zoom-out;">
+  <div style="position:relative;max-width:92vw;max-height:92vh;display:flex;flex-direction:column;align-items:center;cursor:default;" onclick="event.stopPropagation()">
+    <button id="lightbox-close" style="position:absolute;top:-40px;right:0;background:transparent;border:none;color:#fff;font-family:'JetBrains Mono',monospace;font-size:1.2rem;cursor:pointer;padding:8px;">✕ CLOSE [ESC]</button>
+    <img id="lightbox-img" src="" alt="" style="max-width:90vw;max-height:80vh;object-fit:contain;border-radius:4px;box-shadow:0 20px 50px rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.15);" />
+    <div id="lightbox-caption" style="color:#f1e9da;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;text-align:center;letter-spacing:0.04em;"></div>
+  </div>
+</div>
+
+<script>
+  // Theme toggle
+  (function(){
+    var btn = document.getElementById('theme-toggle');
+    if(!btn) return;
+    function setTheme(t){
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('mreazi-theme', t);
+      var icon = document.getElementById('theme-icon');
+      if(icon) icon.textContent = t === 'light' ? '☼' : '◐';
+    }
+    var saved = localStorage.getItem('mreazi-theme') || 'dark';
+    setTheme(saved);
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      setTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+  })();
+
+  // Lightbox
+  (function(){
+    var lb = document.getElementById('art-lightbox');
+    var lbImg = document.getElementById('lightbox-img');
+    var lbCap = document.getElementById('lightbox-caption');
+    var closeBtn = document.getElementById('lightbox-close');
+    if(!lb || !lbImg) return;
+
+    function openLb(src, alt){
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      lbCap.textContent = alt || '';
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLb(){
+      lb.style.display = 'none';
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.sf-card img, figure img').forEach(function(img){
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', function(e){
+        e.preventDefault();
+        openLb(this.src, this.alt || this.getAttribute('data-title'));
+      });
+    });
+
+    lb.addEventListener('click', closeLb);
+    if(closeBtn) closeBtn.addEventListener('click', closeLb);
+    window.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeLb();
+    });
+  })();
+</script>
+
+</html>
