@@ -53,5 +53,31 @@
       "resolution": "1920x1080",
       "status": "Confirmed"
     }
-  ]
+  ],
+  "1I": {
+    "title": "Dabebi",
+    "cue_video": "assets/mr-eazi/videos/cues/1I_dabebi.mp4",
+    "root_video": "assets/mr-eazi/videos/1I_dabebi.mp4",
+    "poster": "assets/mr-eazi/videos/posters/1I_dabebi_poster.jpg",
+    "duration": "8.25s",
+    "type": "loop"
+  },
+  "trans-1I-1J": {
+    "title": "TRANSITION",
+    "device": "Red Thread Reveal",
+    "transition_video": "assets/mr-eazi/videos/transitions/1I_transition_1J.mp4",
+    "root_video": "assets/mr-eazi/videos/1I_transition_1J.mp4",
+    "poster": "assets/mr-eazi/videos/posters/1I_transition_1J_poster.jpg",
+    "poster_mid": "assets/mr-eazi/videos/posters/1I_transition_1J_mid.jpg",
+    "duration": "10.67s",
+    "type": "transition"
+  },
+  "1J": {
+    "title": "Bus Stop",
+    "cue_video": "assets/mr-eazi/videos/cues/1J_bus_stop.mp4",
+    "root_video": "assets/mr-eazi/videos/1J_bus_stop.mp4",
+    "poster": "assets/mr-eazi/videos/posters/1J_bus_stop_poster.jpg",
+    "duration": "7.96s",
+    "type": "loop"
+  }
 }
