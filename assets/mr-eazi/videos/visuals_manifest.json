@@ -1,41 +1,57 @@
 {
-  "cues": {
-    "1A": {
-      "cueId": "1A",
-      "videoSrc": "assets/mr-eazi/videos/cues/1A_intro_loop_1.mp4",
-      "posterSrc": "assets/mr-eazi/videos/posters/1A_intro_loop_1_poster.jpg",
+  "cues": [
+    {
+      "id": "1A",
+      "title": "Intro",
+      "video": "assets/mr-eazi/videos/cues/1A_intro_loop1.mp4",
+      "poster": "assets/mr-eazi/videos/posters/1A_intro_loop1_poster.jpg",
       "duration": "11s",
-      "sizeBytes": 23682343,
-      "originalFile": "1A - INTRO Loop 1.mp4"
+      "resolution": "1920x1080",
+      "type": "loop"
     },
-    "1B": {
-      "cueId": "1B",
-      "videoSrc": "assets/mr-eazi/videos/cues/1B_teef_teef.mp4",
-      "posterSrc": "assets/mr-eazi/videos/posters/1B_teef_teef_poster.jpg",
-      "duration": "10s",
-      "sizeBytes": 27816059,
-      "originalFile": "1B - TEEF TEEF.mp4"
+    {
+      "id": "1B",
+      "title": "Teef Teef",
+      "video": "assets/mr-eazi/videos/cues/1B_teef_teef.mp4",
+      "poster": "assets/mr-eazi/videos/posters/1B_teef_teef_poster.jpg",
+      "duration": "20s",
+      "resolution": "1920x1080",
+      "type": "loop"
+    },
+    {
+      "id": "1C",
+      "title": "Shitor",
+      "video": "assets/mr-eazi/videos/cues/1C_shitor_loop.mp4",
+      "poster": "assets/mr-eazi/videos/posters/1C_shitor_loop_poster.jpg",
+      "duration": "8s",
+      "resolution": "1920x1080",
+      "type": "loop"
     }
-  },
-  "transitions": {
-    "1A-1B": {
-      "from": "1A",
-      "to": "1B",
-      "title": "1A \u2192 1B Transition",
-      "device": "The Seam Dissolve",
-      "duration": "26s",
-      "video": "/assets/mr-eazi/videos/transitions/1A_transition_1B.mp4",
-      "poster": "/assets/mr-eazi/videos/posters/1A_transition_1B_poster.jpg",
-      "rawName": "1A TRANSITION 1B.mp4"
-    },
-    "1A->1B": {
+  ],
+  "transitions": [
+    {
+      "id": "trans-1A-1B",
       "fromCue": "1A",
       "toCue": "1B",
-      "videoSrc": "assets/mr-eazi/videos/transitions/1A_transition_1B.mp4",
-      "posterSrc": "assets/mr-eazi/videos/posters/1A_transition_1B_mid.jpg",
+      "title": "TRANSITION",
+      "device": "The Seam Dissolve",
+      "video": "assets/mr-eazi/videos/transitions/1A_transition_1B.mp4",
+      "poster": "assets/mr-eazi/videos/posters/1A_transition_1B_mid.jpg",
       "duration": "26s",
-      "sizeBytes": 72916916,
-      "originalFile": "1A TRANSITION 1B.mp4"
+      "resolution": "1920x1080",
+      "status": "Confirmed"
+    },
+    {
+      "id": "trans-1B-1C",
+      "fromCue": "1B",
+      "toCue": "1C",
+      "title": "TRANSITION",
+      "device": "Light Pillar Corridor",
+      "video": "assets/mr-eazi/videos/transitions/1B_transition_1C.mp4",
+      "poster": "assets/mr-eazi/videos/posters/1B_transition_1C_mid.jpg",
+      "duration": "13s",
+      "resolution": "1920x1080",
+      "status": "Confirmed"
     }
-  }
+  ]
 }
